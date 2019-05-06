@@ -1,0 +1,122 @@
+CREATE TABLE public.infomation (
+ id serial DEFAULT 0,
+ title text DEFAULT '',
+ front_cover_img text DEFAULT '',
+ content text DEFAULT '',
+ add_time timestamp(0) WITHOUT TIME ZONE DEFAULT now() NOT NULL,
+  CONSTRAINT infomation_pkey PRIMARY KEY(id)
+)
+WITH(oids = false);
+
+COMMENT ON TABLE public.infomation IS '信息表'; 
+COMMENT ON COLUMN public.infomation.id IS '主键Id'; 
+
+COMMENT ON COLUMN public.infomation.title IS '标题'; 
+
+COMMENT ON COLUMN public.infomation.front_cover_img IS '封面图片地址（首页）'; 
+
+COMMENT ON COLUMN public.infomation.content IS '内容'; 
+
+COMMENT ON COLUMN public.infomation.add_time IS '添加时间'; 
+
+
+
+CREATE TABLE public.product_class (
+ id serial,
+ name text DEFAULT '' NOT NULL,
+ is_enable integer DEFAULT 0,
+ add_time timestamp(0) WITHOUT TIME ZONE DEFAULT now() NOT NULL,
+  CONSTRAINT product_class_pkey PRIMARY KEY(id)
+)
+WITH(oids = false);
+
+COMMENT ON TABLE public.product_class IS '产品分类'; 
+COMMENT ON COLUMN public.product_class.id IS '主键Id'; 
+
+COMMENT ON COLUMN public.product_class.name IS '菜单名称或各个页面功能名称'; 
+
+COMMENT ON COLUMN public.product_class.is_enable IS '是否启用，1=true(启用)，0=false（禁用）'; 
+
+COMMENT ON COLUMN public.product_class.add_time IS '添加时间'; 
+
+
+
+CREATE TABLE public.product (
+ id serial,
+ name text DEFAULT '' NOT NULL,
+ code text DEFAULT '',
+ product_class_id integer DEFAULT 0,
+ standard text DEFAULT '',
+ quality_guarantee_period text DEFAULT '',
+ place_of_origin text DEFAULT '',
+ front_cover_img text DEFAULT '',
+ content text DEFAULT '',
+ is_enable integer DEFAULT 0,
+ add_time timestamp(0) WITHOUT TIME ZONE DEFAULT now() NOT NULL,
+  CONSTRAINT product_pkey PRIMARY KEY(id)
+)
+WITH(oids = false);
+
+COMMENT ON TABLE public.product IS '产品信息'; 
+COMMENT ON COLUMN public.product.id IS '主键Id'; 
+
+COMMENT ON COLUMN public.product.name IS '菜单名称或各个页面功能名称'; 
+
+COMMENT ON COLUMN public.product.code IS '产品编码'; 
+
+COMMENT ON COLUMN public.product.product_class_id IS '所属产品分类'; 
+
+COMMENT ON COLUMN public.product.standard IS '产品规格'; 
+
+COMMENT ON COLUMN public.product.quality_guarantee_period IS '保质期'; 
+
+COMMENT ON COLUMN public.product.place_of_origin IS '产地'; 
+
+COMMENT ON COLUMN public.product.front_cover_img IS '封面图片地址（展示图片）'; 
+
+COMMENT ON COLUMN public.product.content IS '产品描述'; 
+
+COMMENT ON COLUMN public.product.is_enable IS '是否启用，1=true(启用)，0=false（禁用）'; 
+
+COMMENT ON COLUMN public.product.add_time IS '添加时间'; 
+
+
+
+CREATE TABLE public.manager (
+ id serial,
+ login_name text DEFAULT '' NOT NULL,
+ login_password text DEFAULT '' NOT NULL,
+ last_login_time timestamp(0) WITHOUT TIME ZONE,
+ last_login_ip text DEFAULT '',
+ login_count integer DEFAULT 0,
+ is_enable integer DEFAULT 1,
+ add_time timestamp(0) WITHOUT TIME ZONE DEFAULT now() NOT NULL,
+  CONSTRAINT manager_pkey PRIMARY KEY(id)
+)
+WITH(oids = false);
+
+COMMENT ON TABLE public.manager IS '管理员管理表'; 
+COMMENT ON COLUMN public.manager.id IS '主键Id'; 
+
+COMMENT ON COLUMN public.manager.login_name IS '登陆账号'; 
+
+COMMENT ON COLUMN public.manager.login_password IS '登陆密码'; 
+
+COMMENT ON COLUMN public.manager.last_login_time IS '最后登陆时间'; 
+
+COMMENT ON COLUMN public.manager.last_login_ip IS '最后登陆IP'; 
+
+COMMENT ON COLUMN public.manager.login_count IS '登陆次数'; 
+
+COMMENT ON COLUMN public.manager.is_enable IS '账号是否启用，1=true(启用)，0=false（禁用）'; 
+
+COMMENT ON COLUMN public.manager.add_time IS '注册时间'; 
+
+
+create unique index on public.manager using btree(login_name);
+CREATE INDEX manager_last_login_time_idx ON public.manager USING btree(last_login_time);
+CREATE INDEX manager_is_enable_idx ON public.manager USING btree(is_enable);
+
+
+INSERT INTO manager(login_name, login_password, is_enable) VALUES ('admin', 'E10ADC3949BA59ABBE56E057F20F883E', 1);
+
